@@ -1,5 +1,7 @@
-const axios = require('axios');
+const axios = require('axios'),
+  config = require('../../config');
 
-exports.getAlbum = id => axios.get(`https://jsonplaceholder.typicode.com/albums/${id}`);
+const baseUrl = config.common.albumsBaseUrl;
+exports.getAlbum = id => axios.get(`${baseUrl}/albums/${id}`);
 
-exports.getAlbums = id => axios.get(`https://jsonplaceholder.typicode.com/albums/${id}`);
+exports.getAlbums = () => axios.get(`${baseUrl}/albums`);
