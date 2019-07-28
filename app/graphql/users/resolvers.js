@@ -5,7 +5,7 @@ exports.createUser = ({ email, password, name, lastName }) => {
   try {
     logger.info(`Trying to create user with email ${email}`);
     let error = {};
-    if (password.lenth < 8) {
+    if (password.length < 8) {
       error = {
         message: 'Password shoud be greater than 8 characters'
       };
