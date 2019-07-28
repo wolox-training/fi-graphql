@@ -4,7 +4,7 @@ const { user: User } = require('../../models'),
 
 exports.createUser = ({ email, password, name, lastName }) => {
   logger.info(`Trying to create user with email ${email}`);
-  if (password.lenth < 8) {
+  if (password.length < 8) {
     throw badRequest('Password shoud be greater than 8 characters');
   } else if (!/[A-Za-z0-9]/.test(password)) {
     throw badRequest('The password should contain only numbers and letters');
