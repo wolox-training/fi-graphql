@@ -16,10 +16,7 @@ migrationsManager
     }); */
     new ApolloServer({
       schema,
-      formatError: err => ({
-        message: err.message,
-        statusCode: err.extensions.code
-      })
+      formatError: err => err.extensions.exception.invalidFields
     })
       .listen(port)
       .then(({ url, subscriptionsUrl }) => {
