@@ -6,14 +6,17 @@ exports.album = id => {
   return getAlbum(id).then(response => response.data);
 };
 
-exports.albums = ({ offset = 0, limit = 20, orderBy = null }) => {
+exports.albums = ({ offset = 0, limit = 20, orderBy = null, filter = null }) => {
   logger.info(
-    `Requesting album list with the following params ${JSON.stringify({ offset, limit, orderBy })}`
+    `Requesting album list with the following params ${JSON.stringify({ offset, limit, orderBy, filter })}`
   );
-  return getAlbums({ offset, limit, orderBy }).then(response => {
-    const sortedData = orderBy
-      ? response.data.sort((first, second) => (first[orderBy] > second[orderBy] ? 1 : -1))
+  return getAlbums().then(response => {
+    const filteredData = filter
+      ? response.data.filter(album => album.title.indexOf(filter) !== -1)
       : response.data;
+    const sortedData = orderBy
+      ? filteredData.sort((first, second) => (first[orderBy] > second[orderBy] ? 1 : -1))
+      : filteredData;
     return sortedData.slice(offset, offset + limit);
   });
 };
