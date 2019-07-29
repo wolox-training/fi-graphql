@@ -14,9 +14,14 @@ migrationsManager
       enabled: !!config.common.rollbar.accessToken,
       environment: config.common.rollbar.environment || config.environment
     }); */
-    new ApolloServer({ schema }).listen(port).then(({ url, subscriptionsUrl }) => {
-      logger.info(`🚀 Server ready at ${url}`);
-      logger.info(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
+    new ApolloServer({
+      schema,
+      formatError: err => err.extensions.exception.invalidFields
     })
+      .listen(port)
+      .then(({ url, subscriptionsUrl }) => {
+        logger.info(`🚀 Server ready at ${url}`);
+        logger.info(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
+      })
   )
   .catch(logger.error);
