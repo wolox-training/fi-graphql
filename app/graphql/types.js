@@ -5,6 +5,7 @@ module.exports = gql`
   type Mutation
   type Subscription
   type User {
+    firstName: String @deprecated(reason: "Use name field.")
     name: String!
     lastName: String!
     username: String!
