@@ -9,7 +9,6 @@ module.exports = gql`
     firstName: String @deprecated(reason: "Deprecated field.")
     name: String @deprecated(reason: "Deprecated field.")
     lastName: String @deprecated(reason: "Deprecated field")
-    username: String!
     email: String!
     password: String!
     id: ID!
