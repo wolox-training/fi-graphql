@@ -2,35 +2,34 @@ const { query } = require('../server.spec'),
   { getAlbum, getAlbums } = require('./graphql'),
   albumFactory = require('../factories/album');
 
-describe.only('albums', () => {
+describe('albums', () => {
   describe('queries', () => {
     it('should get album properly', () =>
-      albumFactory.create().then(album =>
-        query(getAlbum(album.id)).then(res => {
-          expect(res.data).toEqual({
-            album: {
-              title: album.title,
-              author: album.author
-            }
-          });
+      albumFactory
+        .create({
+          title: 'quidem molestiae enim'
         })
-      ));
+        .then(album =>
+          query(getAlbum(album.id)).then(res => {
+            expect(res.data.album.title).toEqual(album.title);
+          })
+        ));
 
-    it('should get all users', () =>
+    it('should get all albums', () =>
       albumFactory.createMany(5).then(() =>
         query(getAlbums()).then(res => {
-          expect(res.data.users).toHaveLength(5);
+          expect(res.data.albums).toHaveLength(20);
         })
       ));
 
-    it('should return null when fetching a non existing user', () =>
+    it('should return null when fetching a non existing album', () =>
       query(getAlbum(876545678)).then(res => {
         expect(res.data).toBeNull();
       }));
 
-    it('should return an empty array wheren there are no users', () =>
+    it('should return an empty array wheren there are no albums', () =>
       query(getAlbums()).then(res => {
-        expect(res.data.users).toEqual([]);
+        expect(res.data.albums).toEqual([]);
       }));
   });
 });

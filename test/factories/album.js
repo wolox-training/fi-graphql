@@ -4,7 +4,8 @@ const { factory } = require('factory-girl'),
   { album: Album } = models;
 
 factory.define('album', Album, {
-  title: () => faker.name.firstName()
+  title: () => faker.name.firstName(),
+  artist: () => faker.name.firstName()
 });
 
 module.exports = {
