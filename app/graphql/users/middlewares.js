@@ -1,12 +1,19 @@
 const responseErrors = require('../../errors'),
   logger = require('../../logger');
 exports.createUser = (resolve, root, args) => {
-  const { email, password } = args.user;
+  const { email, password, name, lastName } = args.user;
   const errors = [];
   if (password.length < 8) {
     errors.push({
       field: 'password',
       message: 'Password shoud be greater than 8 characters',
+      statusCode: 422
+    });
+  }
+
+  if (!password || !email || !name || !lastName) {
+    errors.push({
+      message: 'Required params missing',
       statusCode: 422
     });
   }
