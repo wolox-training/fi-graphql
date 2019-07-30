@@ -46,7 +46,8 @@ const config = {
       header_name: 'authorization',
       secret: process.env.NODE_API_SESSION_SECRET
     },
-    albumsBaseUrl: process.env.ALBUMS_BASE_URL
+    albumsBaseUrl: process.env.ALBUMS_BASE_URL,
+    salt: process.env.CRYPT_SALT
   }
 };
 

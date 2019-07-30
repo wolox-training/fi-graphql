@@ -1,5 +1,5 @@
 const { mutate } = require('../server.spec'),
-  { createUser } = require('./graphql'),
+  { createUser, login } = require('./graphql'),
   userFactory = require('../factories/user');
 
 describe('users', () => {
@@ -11,6 +11,13 @@ describe('users', () => {
           expect(email).toEqual(user.email);
           expect(password).toEqual(user.password);
           expect(id).toBeDefined();
+        })
+      ));
+    it.only('should login successfuly', () =>
+      userFactory.attributes().then(user =>
+        mutate(login(user)).then(res => {
+          const { accessToken } = res.data.login;
+          expect(accessToken).toEqual(34343428403);
         })
       ));
   });
