@@ -1,6 +1,5 @@
-const bcrypt = require('bcrypt'),
-  config = require('../../config');
+const bcrypt = require('bcrypt');
 
-exports.encrypt = password => bcrypt.hash(password, config.common.salt, (err, hash) => hash);
+exports.encrypt = password => bcrypt.hash(password, 10);
 
-exports.compare = (password, hashedPassword) => bcrypt.compare(password, hashedPassword, (err, res) => res);
+exports.compare = (hashedPassword, password) => bcrypt.compare(password, hashedPassword);
