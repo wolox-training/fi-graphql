@@ -13,7 +13,9 @@ exports.createUser = (resolve, root, args) => {
 
   if (!password || !email || !name || !lastName) {
     errors.push({
-      message: 'Required params missing',
+      message: `These params are required: ${['password', 'email', 'name', 'lastName']
+        .filter(property => !args.user[property])
+        .join(', ')}`,
       statusCode: 422
     });
   }
