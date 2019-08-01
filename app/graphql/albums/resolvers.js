@@ -1,5 +1,5 @@
 const { getAlbum, getAlbums } = require('../../services/album'),
-  { album: Album, user: User } = require('../../models'),
+  { album: Album } = require('../../models'),
   logger = require('../../logger'),
   apiErrors = require('../../errors');
 
@@ -23,17 +23,22 @@ exports.albums = ({ offset = 0, limit = 20, orderBy = null, filter = null }) => 
   });
 };
 
-exports.buyAlbum = albumId =>
+exports.buyAlbum = (albumId, userPromise) =>
   getAlbum(albumId).then(response => {
     const album = response.data;
-    logger.info(`The user bought album ${album.id}`);
     if (album) {
-      return User.findOne({ where: { email: 'francisco.iglesias@wolox.com.ar' } }).then(user => {
-        if (user) {
-          logger.info(user.dataValues.id);
-          return Album.create({ title: album.title, user_id: user.dataValues.id });
+      return userPromise.then(user => {
+        if (!user) {
+          throw apiErrors.forbidden('Unauthorized user');
         }
-        throw apiErrors.badRequest('The user does not exists');
+        return Album.findAll({ where: { user_id: user.dataValues.id, id: album.id } }).then(alreadyBought => {
+          if (alreadyBought.length) {
+            throw apiErrors.badRequest('The user has already bought that album');
+          } else {
+            logger.info(`The user bought album ${album.id}`);
+            return Album.createModel({ title: album.title, user_id: user.dataValues.id });
+          }
+        });
       });
     }
     throw apiErrors.badRequest('The album does not exists');
