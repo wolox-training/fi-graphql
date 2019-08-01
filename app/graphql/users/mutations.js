@@ -4,12 +4,12 @@ const { gql } = require('apollo-server'),
 module.exports = {
   mutations: {
     createUser: (_, { user }) => createUser(user),
-    login: (_, { credentials }) => login(credentials)
+    logIn: (_, { credentials }) => login(credentials)
   },
   schema: gql`
     extend type Mutation {
       createUser(user: UserInput!): User!
-      login(credentials: LoginInput!): AccessToken!
+      logIn(credentials: LoginInput!): AccessToken!
     }
   `
 };
