@@ -3,13 +3,21 @@ module.exports = (sequelize, DataTypes) => {
   const Album = sequelize.define(
     'album',
     {
-      title: DataTypes.STRING
+      title: DataTypes.STRING,
+      user_id: {
+        type: DataTypes.INTEGER,
+        references: 'users',
+        referencesKey: 'id'
+      }
     },
     {
       paranoid: true,
       underscored: true
     }
   );
+  Album.assosiate = models => {
+    Album.belongsTo(models.User, { foreignKey: 'user_id' });
+  };
 
   Album.createModel = album => Album.create(album);
 

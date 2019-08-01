@@ -21,7 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       paranoid: true,
-      underscored: true
+      underscored: true,
+      classMethods: {
+        associate: models => {
+          User.belongsTo(models.Album);
+        }
+      }
     }
   );
 

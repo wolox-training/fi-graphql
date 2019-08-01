@@ -1,5 +1,7 @@
 const { getAlbum, getAlbums } = require('../../services/album'),
-  logger = require('../../logger');
+  { album: Album, user: User } = require('../../models'),
+  logger = require('../../logger'),
+  apiErrors = require('../../errors');
 
 exports.album = id => {
   logger.info(`Requesting album with id: ${id}`);
@@ -20,3 +22,19 @@ exports.albums = ({ offset = 0, limit = 20, orderBy = null, filter = null }) => 
     return sortedData.slice(offset, offset + limit);
   });
 };
+
+exports.buyAlbum = albumId =>
+  getAlbum(albumId).then(response => {
+    const album = response.data;
+    logger.info(`The user bought album ${album.id}`);
+    if (album) {
+      return User.findOne({ where: { email: 'francisco.iglesias@wolox.com.ar' } }).then(user => {
+        if (user) {
+          logger.info(user.dataValues.id);
+          return Album.create({ title: album.title, user_id: user.dataValues.id });
+        }
+        throw apiErrors.badRequest('The user does not exists');
+      });
+    }
+    throw apiErrors.badRequest('The album does not exists');
+  });
