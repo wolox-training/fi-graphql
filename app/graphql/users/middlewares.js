@@ -1,7 +1,7 @@
 const responseErrors = require('../../errors'),
   logger = require('../../logger');
 exports.createUser = (resolve, root, args) => {
-  const { email, password, name, lastName } = args.user;
+  const { email, password } = args.user;
   const errors = [];
   if (password.length < 8) {
     errors.push({
@@ -11,7 +11,7 @@ exports.createUser = (resolve, root, args) => {
     });
   }
 
-  if (!password || !email || !name || !lastName) {
+  if (!password || !email) {
     errors.push({
       message: `These params are required: ${['password', 'email', 'name', 'lastName']
         .filter(property => !args.user[property])

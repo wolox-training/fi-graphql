@@ -2,9 +2,11 @@ const { gql } = require('apollo-server');
 
 module.exports = gql`
   input UserInput {
-    firstName: String @deprecated(reason: "Use name field.")
-    name: String!
-    lastName: String!
+    firstName: String
+      @deprecated(reason: "Deprecated field, now the user no longer has firstName or lastName.")
+    name: String @deprecated(reason: "Deprecated field, now the user no longer has firstName or lastName.")
+    lastName: String
+      @deprecated(reason: "Deprecated field, now the user no longer has firstName or lastName.")
     email: String!
     password: String!
   }
