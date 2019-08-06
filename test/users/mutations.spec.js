@@ -13,7 +13,7 @@ describe('users', () => {
           expect(id).toBeDefined();
         })
       ));
-    it.only('should login successfuly', () =>
+    it('should login successfuly', () =>
       userFactory.attributes().then(user =>
         mutate(createUser(user)).then(() =>
           mutate(logIn(user)).then(res => {
