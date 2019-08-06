@@ -47,7 +47,7 @@ exports.createUser = (resolve, root, args) => {
 exports.buyAlbum = (resolve, root, args, context) =>
   context.user.then(user => {
     if (!user) {
-      throw responseErrors.forbidden('Unauthorized user');
+      throw responseErrors.unauthorized('Unauthorized user');
     }
     return resolve(root, args, { user });
   });
