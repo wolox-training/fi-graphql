@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.encrypt = password => bcrypt.hash(password, 10);
 
