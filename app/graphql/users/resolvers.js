@@ -1,7 +1,8 @@
 const { user: User } = require('../../models'),
   apiErrors = require('../../errors'),
   logger = require('../../logger'),
-  { encrypt, compare } = require('../../services/crypt');
+  { encrypt, compare } = require('../../services/crypt'),
+  { encode, decode } = require('../../services/helpers');
 
 exports.createUser = ({ email, password }) => {
   logger.info(`Trying to create user with email ${email}`);
@@ -27,7 +28,10 @@ exports.login = ({ email, password }) => {
       if (!res) {
         throw apiErrors.forbidden('The passwords do not match');
       }
-      return { accessToken: 34343428403 };
+      logger.info(user.dataValues);
+      return { accessToken: encode(user.dataValues) };
     });
   });
 };
+
+exports.getUser = token => (token ? User.findOne({ where: { email: decode(token).email } }) : {});

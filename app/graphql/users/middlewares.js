@@ -1,5 +1,6 @@
 const responseErrors = require('../../errors'),
   logger = require('../../logger');
+
 exports.createUser = (resolve, root, args) => {
   const { email, password } = args.user;
   const errors = [];
@@ -42,3 +43,11 @@ exports.createUser = (resolve, root, args) => {
   }
   return resolve(root, args);
 };
+
+exports.buyAlbum = (resolve, root, args, context) =>
+  context.user.then(user => {
+    if (!user) {
+      throw responseErrors.unauthorized('Unauthorized user');
+    }
+    return resolve(root, args, { user });
+  });
